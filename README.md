@@ -66,3 +66,4 @@ Thanks for your interest in internationalizing the FarmBot web app! To add trans
 0. Navigate to `/public/app-resources/languages` and run the command `bun _helper.js yy` where `yy` is your language's [language code](http://www.science.co.il/Language/Locale-codes.php). Eg: `ru` for Russian.
 0. Edit the translations in the file created in the previous step: `"phrase": "translated phrase"`.
 0. When you have updated or added new translations, commit/push your changes and submit a pull request.
+# agribot360
