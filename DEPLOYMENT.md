@@ -39,10 +39,11 @@ Rails-compatible host with its database, Redis, and background workers.
 1. Import the repository into Vercel using the repository root. The included
    `vercel.json` installs Bun dependencies, builds the frontend bundles, and
    publishes them under `/assets/dist/`.
-2. Set `ASSET_URL` on the Rails backend to the absolute asset base URL, for
-   example `https://<your-vercel-domain>/assets/dist`. The Rails app will use
+2. Set `ASSET_URL` on the Rails backend to
+   `https://agribot360-8aiq.vercel.app/assets/dist`. The Rails app will use
    this URL for its frontend bundles and allow it in its content security
-   policy.
+   policy. Confirm that the Vercel deployment serves files under
+   `/assets/dist/` before enabling this setting.
 3. Configure the Rails app's public API and MQTT URLs for the backend host.
    The frontend still obtains its runtime configuration and HTML shell from
    Rails.
