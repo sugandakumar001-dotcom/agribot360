@@ -29,3 +29,24 @@ If you want to run a server on a LAN for personal use, this is the easiest and c
  3. (If emails are enabled) Enable the [Heroku scheduler](https://elements.heroku.com/addons/scheduler) and configure it to run `rake api:log_digest` every 10 minutes. This is required for Device log digests via email.
 
 Don't forget to [set ENV vars](https://devcenter.heroku.com/articles/config-vars) and run `heroku run rake db:setup`.
+
+# Deploying frontend assets to Vercel
+
+This repository is a Rails application. Vercel serves the compiled frontend
+assets and public static files only; Rails must still be deployed to a
+Rails-compatible host with its database, Redis, and background workers.
+
+1. Import the repository into Vercel using the repository root. The included
+   `vercel.json` installs Bun dependencies, builds the frontend bundles, and
+   publishes them under `/assets/dist/`.
+2. Set `ASSET_URL` on the Rails backend to the absolute asset base URL, for
+   example `https://<your-vercel-domain>/assets/dist`. The Rails app will use
+   this URL for its frontend bundles and allow it in its content security
+   policy.
+3. Configure the Rails app's public API and MQTT URLs for the backend host.
+   The frontend still obtains its runtime configuration and HTML shell from
+   Rails.
+
+The Vercel root page indicates that the deployment is an asset host; it is not
+the FarmBot application itself. Redeploy Vercel whenever frontend assets
+change.

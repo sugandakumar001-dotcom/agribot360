@@ -1,0 +1,5 @@
+{
+  "installCommand": "bun install --frozen-lockfile",
+  "buildCommand": "bun scripts/bun/build_vercel.ts",
+  "outputDirectory": "dist"
+}
