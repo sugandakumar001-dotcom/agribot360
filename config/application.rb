@@ -44,8 +44,6 @@ module FarmBot
     ASSET_DEV_HOST = ENV.fetch("ASSET_HOST", ENV.fetch("API_HOST", "localhost"))
     ASSET_DEV_PORT = ENV.fetch("ASSET_PORT", "3808")
     ASSET_DEV_URL = "http://#{ASSET_DEV_HOST}:#{ASSET_DEV_PORT}"
-    ASSET_URL = ENV["ASSET_URL"]&.delete_suffix("/")
-    ASSET_CSP_SOURCE = ASSET_URL && "#{ASSET_URL}/"
     config.generators do |g|
       g.template_engine :erb
       g.test_framework :rspec, :fixture_replacement => :factory_bot, :views => false, :helper => false
@@ -112,7 +110,7 @@ module FarmBot
           data:
           cdnjs.cloudflare.com
           'self'
-        ) + [ASSET_CSP_SOURCE].compact,
+        ),
         form_action: %w('self'),
         frame_src: %w(*),       # We need "*" to support webcam users.
         frame_ancestors: %w('self' https://farm.bot https://*.shopify.com https://*.shopifypreview.com),
@@ -131,7 +129,6 @@ module FarmBot
         ),
         plugin_types: %w(),
         script_src: [
-          ASSET_CSP_SOURCE,
           ASSET_DEV_URL,
           "www.datadoghq-browser-agent.com",
           "cdn.rollbar.com",
@@ -149,7 +146,7 @@ module FarmBot
           cdnjs.cloudflare.com
           'unsafe-inline'
           'self'
-        ) + [ASSET_CSP_SOURCE].compact,
+        ),
         worker_src: %w(),
         upgrade_insecure_requests: false, # WHY? Some people run webcam feeds
                                           # over plain http://. I wish they

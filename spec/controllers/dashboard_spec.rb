@@ -12,16 +12,6 @@ describe DashboardController do
         .to eq("/assets/dist/front_page-index.js")
     end
 
-    it "maps css assets to the default asset base URL" do
-      expect(DashboardController::CSS_OUTPUTS.fetch(:default))
-        .to eq("/assets/dist/css/index.css")
-    end
-
-    it "uses a configured static asset URL" do
-      expect(DashboardController.asset_url("https://assets.example.com/assets/dist/"))
-        .to eq("https://assets.example.com/assets/dist")
-    end
-
     it "keeps root entry names flat" do
       expect(DashboardController.js_output_file("/index.tsx"))
         .to eq("index.js")

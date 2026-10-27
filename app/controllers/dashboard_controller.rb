@@ -17,11 +17,8 @@ class DashboardController < ApplicationController
     :promo,
   ]
 
-  def self.asset_url(url = ENV["ASSET_URL"])
-    (url || "/" + File.join("assets", "dist")).delete_suffix("/")
-  end
-
-  OUTPUT_URL = asset_url # <= See PUBLIC_OUTPUT_DIR
+  OUTPUT_URL = "/" + File.join("assets", "dist") # <= served from public/ dir
+                                                 # <= See PUBLIC_OUTPUT_DIR
   CACHE_DIR = File.join(".cache")
 
   CSS_INPUTS = {
@@ -47,11 +44,11 @@ class DashboardController < ApplicationController
   RELEASE_CHUNK = GlobalConfig::LONG_REVISION == "NONE" ?
     SecureRandom.hex.first(5) : GlobalConfig::LONG_REVISION
   CACHE_BUST_STRING = "?version=#{RELEASE_CHUNK}"
-  PUBLIC_OUTPUT_DIR = File.join("public", "assets", "dist")
+  PUBLIC_OUTPUT_DIR = File.join("public", OUTPUT_URL)
 
   CSS_OUTPUTS = CSS_INPUTS.each_with_object({}) do |(k, v), acc|
     file = v.gsub(/\.scss$/, ".css")
-    acc[k] = "#{OUTPUT_URL}/#{file.delete_prefix("/")}"
+    acc[k] = File.join(OUTPUT_URL, file)
   end.with_indifferent_access
 
   def self.js_output_file(path)
@@ -62,7 +59,7 @@ class DashboardController < ApplicationController
   end
 
   JS_OUTPUTS = JS_INPUTS.each_with_object({}) do |(k, v), acc|
-    acc[k] = "#{OUTPUT_URL}/#{js_output_file(v)}"
+    acc[k] = File.join(OUTPUT_URL, js_output_file(v))
   end.with_indifferent_access
 
   EVERY_STATIC_PAGE.map do |actn|
